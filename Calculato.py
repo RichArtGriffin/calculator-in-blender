@@ -1,5 +1,7 @@
 import bpy
 
+#comentario random yey
+
 variable_a = ""
 variable_b = ""
 arithmetic_operation = ""
