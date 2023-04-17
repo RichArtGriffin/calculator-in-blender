@@ -11,6 +11,7 @@ bl_info = {
 }
 number_list = [""]
 numer_active = 0
+last_result = 0
 
 # Escribir numero
 class WriteOneOperator(bpy.types.Operator):
@@ -21,7 +22,9 @@ class WriteOneOperator(bpy.types.Operator):
     def execute(self, context):
         global number_list
         global numer_active
+        global last_result
         number_list[numer_active] = number_list[numer_active] + self.string_property
+        last_result = number_list[0]
         print("press to " + self.string_property)
         return {'FINISHED'}
 
@@ -38,13 +41,48 @@ class NewOperator(bpy.types.Operator):
         number_list.append(self.string_property)
         number_list.append("")
         return {'FINISHED'}
+
+
 # Calculate result
 class EqualOperator(bpy.types.Operator):
     bl_idname = "object.equal_operator"
     bl_label = "Botón Equal Operator"
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
-        pass
+        global number_list
+        global numer_active
+        global last_result
+        numer_active = numer_active
+        ref_indice = 0
+        if numer_active == 0:
+            print("igual al mismo numero")
+            return {'FINISHED'}
+        else:
+            continuar = True
+            for indice in number_list:
+                ref_indice = ref_indice + 1
+                print(str(indice))
+                if indice == "+" and continuar:
+                    last_result = int(last_result) + int(number_list[ref_indice])
+                    print("suma :" + str(last_result))
+                        
+                elif indice == "-"and continuar:
+                    last_result = int(last_result) - int(number_list[int(ref_indice)])
+                    print("Resta :" + str(last_result))
+                    
+                elif indice == "*"and continuar:
+                    last_result = int(last_result) * int(number_list[int(ref_indice)])
+                    print("multiplicacion")
+                    
+                elif indice == "/"and continuar:
+                    last_result = int(last_result) / int(number_list[int(ref_indice)])
+                    print("division")
+                    
+            print("numero activo :" + str(last_result))
+        number_list.clear()
+        number_list.append(str(last_result))
+        numer_active = 0
+        return {'FINISHED'}
 
 # interfaces
 class CalculatorPanel(bpy.types.Panel):
