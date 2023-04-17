@@ -12,6 +12,7 @@ bl_info = {
 number_list = [""]
 numer_active = 0
 last_result = 0
+last_operation = ""
 
 # Escribir numero
 class WriteOneOperator(bpy.types.Operator):
@@ -37,9 +38,13 @@ class NewOperator(bpy.types.Operator):
     def execute(self, context):
         global number_list
         global numer_active
-        numer_active = numer_active + 2
-        number_list.append(self.string_property)
-        number_list.append("")
+        global last_operation
+        if number_list[-1] == "":
+            number_list[-2] = str(self.string_property)
+        else:
+            numer_active = numer_active + 2
+            number_list.append(self.string_property)
+            number_list.append("")
         return {'FINISHED'}
 
 
