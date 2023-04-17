@@ -9,80 +9,42 @@ bl_info = {
     "location": "View3D > Panel de herramientas",
     "description": "Descripcion del add-on",
 }
+number_list = [""]
+numer_active = 0
 
-variable_a = ""
-variable_b = ""
-arithmetic_operation = ""
-Resultado = "" + variable_a
-
-
-"""def calculate_result(value_a, value_b, calculate_operator):
-    result_operator = ""
-    if calculate_operator == "+":
-        result_operator = value_a + value_b
-        print("sumando")
-    elif calculate_operator == "-":
-        result_operator = value_a - value_b
-        print("restando")
-    elif calculate_operator == "*":
-        result_operator = value_a * value_b
-        print("multiplicando")
-    elif calculate_operator == "/":
-        result_operator = value_a / value_b
-        print("Dividiendo")
-    return result_operator"""
-
-# Operadores aritmeticos escritos
-class SumaOperator(bpy.types.Operator):
-    bl_idname = "object.suma"
-    bl_label = "Botón Suma"
-
-    def execute(self, context):
-        print("¡Botón 1 presionado!")
-        return {'FINISHED'}
-
-class RestaOperator(bpy.types.Operator):
-    bl_idname = "object.resta"
-    bl_label = "Botón Resta"
-
-    def execute(self, context):
-        print("¡Botón 1 presionado!")
-        return {'FINISHED'}
-
-class MultiplicationOperator(bpy.types.Operator):
-    bl_idname = "object.multiplication"
-    bl_label = "Botón Multiplication"
-
-    def execute(self, context):
-        print("¡Botón 1 presionado!")
-        return {'FINISHED'}
-
-class DivisionOperator(bpy.types.Operator):
-    bl_idname = "object.division"
-    bl_label = "Botón Division"
-
-    def execute(self, context):
-        print("¡Botón 1 presionado!")
-        return {'FINISHED'}
-
-# Operadores numericos escritos_________________________________________
-
+# Escribir numero
 class WriteOneOperator(bpy.types.Operator):
     bl_idname = "object.write_number"
     bl_label = "Botón Write Number"
     bl_options = {'REGISTER', 'UNDO'}
-
-    string_property: StringProperty(
-        name="Input String",
-        description="Enter a string",
-        default="",
-    )
-
+    string_property: StringProperty(name="Input String",description="Enter a string",default="",)
     def execute(self, context):
-        global variable_a
-        variable_a = variable_a + self.string_property
-        print("Boton" + self.string_property)
+        global number_list
+        global numer_active
+        number_list[numer_active] = number_list[numer_active] + self.string_property
+        print("press to " + self.string_property)
         return {'FINISHED'}
+
+# Generar Operador y dos nuevos item en la lista
+class NewOperator(bpy.types.Operator):
+    bl_idname = "object.new_operator"
+    bl_label = "Botón New Operator"
+    bl_options = {'REGISTER', 'UNDO'}
+    string_property: StringProperty(name="Operator String",description="Enter a string",default="",)
+    def execute(self, context):
+        global number_list
+        global numer_active
+        numer_active = numer_active + 2
+        number_list.append(self.string_property)
+        number_list.append("")
+        return {'FINISHED'}
+# Calculate result
+class EqualOperator(bpy.types.Operator):
+    bl_idname = "object.equal_operator"
+    bl_label = "Botón Equal Operator"
+    bl_options = {'REGISTER', 'UNDO'}
+    def execute(self, context):
+        pass
 
 # interfaces
 class CalculatorPanel(bpy.types.Panel):
@@ -98,8 +60,8 @@ class CalculatorPanel(bpy.types.Panel):
         box = layout.box()
         row = box.row()
         split = row.split(factor=1/5)
-        split.operator("object.write_number", text="=")
-        split.label(text = Resultado + variable_a + arithmetic_operation + variable_b )
+        split.operator( "object.equal_operator", text="=")
+        split.label(text = "".join(number_list) )
         
         row = layout.row(align=True)
         row.operator("object.write_number", text="7").string_property = "7"
@@ -117,27 +79,23 @@ class CalculatorPanel(bpy.types.Panel):
         row.operator("object.write_number", text="3").string_property = "3"
         
         row = layout.row(align=True)
-        row.operator("object.suma", text="+")
-        row.operator("object.resta", text="-")
-        row.operator("object.multiplication", text="*")
-        row.operator("object.division", text="/")
+        row.operator("object.new_operator", text="+").string_property = "+"
+        row.operator("object.new_operator", text="-").string_property = "-"
+        row.operator("object.new_operator", text="*").string_property = "*"
+        row.operator("object.new_operator", text="/").string_property = "/"
 
 
 def register():
     bpy.utils.register_class(CalculatorPanel)
-    bpy.utils.register_class(SumaOperator)
-    bpy.utils.register_class(RestaOperator)
-    bpy.utils.register_class(MultiplicationOperator)
-    bpy.utils.register_class(DivisionOperator)
     bpy.utils.register_class(WriteOneOperator)
+    bpy.utils.register_class(NewOperator)
+    bpy.utils.register_class(EqualOperator)
 
 def unregister():
     bpy.utils.unregister_class(CalculatorPanel)
-    bpy.utils.unregister_class(SumaOperator)
-    bpy.utils.unregister_class(RestaOperator)
-    bpy.utils.unregister_class(MultiplicationOperator)
-    bpy.utils.unregister_class(DivisionOperator)
     bpy.utils.unregister_class(WriteOneOperator)
+    bpy.utils.unregister_class(NewOperator)
+    bpy.utils.unregister_class(EqualOperator)
 
 if __name__ == "__main__":
     register()
