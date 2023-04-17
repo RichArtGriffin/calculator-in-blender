@@ -84,6 +84,17 @@ class EqualOperator(bpy.types.Operator):
         numer_active = 0
         return {'FINISHED'}
 
+# Clear Operations
+class ClearOperator(bpy.types.Operator):
+    bl_idname = "object.clear"
+    bl_label = "Botón Clear"
+    bl_options = {'REGISTER', 'UNDO'}
+    def execute(self, context):
+        number_list.clear()
+        number_list.append("")
+        numer_active = 0
+        return {'FINISHED'}
+
 # interfaces
 class CalculatorPanel(bpy.types.Panel):
     bl_label = "Calculadora"
@@ -100,6 +111,12 @@ class CalculatorPanel(bpy.types.Panel):
         split = row.split(factor=1/5)
         split.operator( "object.equal_operator", text="=")
         split.label(text = "".join(number_list) )
+
+        row = layout.row(align=True)
+        row.operator("object.new_operator", text="+").string_property = "+"
+        row.operator("object.new_operator", text="-").string_property = "-"
+        row.operator("object.new_operator", text="*").string_property = "*"
+        row.operator("object.new_operator", text="/").string_property = "/"
         
         row = layout.row(align=True)
         row.operator("object.write_number", text="7").string_property = "7"
@@ -115,12 +132,12 @@ class CalculatorPanel(bpy.types.Panel):
         row.operator("object.write_number", text="1").string_property = "1"
         row.operator("object.write_number", text="2").string_property = "2"
         row.operator("object.write_number", text="3").string_property = "3"
-        
+
         row = layout.row(align=True)
-        row.operator("object.new_operator", text="+").string_property = "+"
-        row.operator("object.new_operator", text="-").string_property = "-"
-        row.operator("object.new_operator", text="*").string_property = "*"
-        row.operator("object.new_operator", text="/").string_property = "/"
+        split = row.split(factor=2/3)
+        split.operator( "object.write_number", text="0").string_property = "0"
+        split.operator( "object.clear", text="", icon='TRASH')
+        
 
 
 def register():
@@ -128,12 +145,14 @@ def register():
     bpy.utils.register_class(WriteOneOperator)
     bpy.utils.register_class(NewOperator)
     bpy.utils.register_class(EqualOperator)
+    bpy.utils.register_class(ClearOperator)
 
 def unregister():
     bpy.utils.unregister_class(CalculatorPanel)
     bpy.utils.unregister_class(WriteOneOperator)
     bpy.utils.unregister_class(NewOperator)
     bpy.utils.unregister_class(EqualOperator)
+    bpy.utils.unregister_class(ClearOperator)
 
 if __name__ == "__main__":
     register()
