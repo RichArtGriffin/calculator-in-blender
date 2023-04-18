@@ -58,28 +58,28 @@ class EqualOperator(bpy.types.Operator):
         global numer_active
         global last_result
         numer_active = numer_active
-        ref_indice = 0
+        ref_indice = 0      
         if numer_active == 0:
             print("igual al mismo numero")
-            return {'FINISHED'}
         else:
-            continuar = True
+            if number_list[-2] == "+" or number_list[-2] == "-" or number_list[-2] == "*" or number_list[-2] == "/" and number_list[-1] == "" :
+                number_list = number_list[:-2]
             for indice in number_list:
                 ref_indice = ref_indice + 1
                 print(str(indice))
-                if indice == "+" and continuar:
+                if indice == "+" :
                     last_result = int(last_result) + int(number_list[ref_indice])
                     print("suma :" + str(last_result))
                         
-                elif indice == "-"and continuar:
+                elif indice == "-":
                     last_result = int(last_result) - int(number_list[int(ref_indice)])
                     print("Resta :" + str(last_result))
                     
-                elif indice == "*"and continuar:
+                elif indice == "*":
                     last_result = int(last_result) * int(number_list[int(ref_indice)])
                     print("multiplicacion")
                     
-                elif indice == "/"and continuar:
+                elif indice == "/":
                     last_result = int(last_result) / int(number_list[int(ref_indice)])
                     print("division")
                     
