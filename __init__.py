@@ -6,7 +6,8 @@ import os
 bl_info = {
     "name": "Calculadora",
     "author": "RichArtGriffin",
-    "version": (1, 0),
+    "version": (0, 1),
+    "blender": (2, 80, 0),
     "location": "View3D > Panel de herramientas",
     "description": "Descripcion del add-on",
 }
