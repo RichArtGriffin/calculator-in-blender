@@ -28,6 +28,7 @@ def load_custom_icons():
 
     # Registra los iconos
     custom_icons.load("logo_calculator", os.path.join(icons_dir, "Logo_Calculator.png"), 'IMAGE')
+    custom_icons.load("Icon_Backspace", os.path.join(icons_dir, "Backspace.png"), 'IMAGE')
 
 def unload_custom_icons():
     global custom_icons
@@ -162,6 +163,10 @@ class CalculatorPanel(bpy.types.Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "Calculator"
+    
+    def draw_header(self, context):
+        layout = self.layout
+        layout.label(text="", icon_value=custom_icons["logo_calculator"].icon_id)
 
     def draw(self, context):
         layout = self.layout
@@ -170,7 +175,7 @@ class CalculatorPanel(bpy.types.Panel):
         row = box.row()
         split = row.split(factor=5/6)
         split.label(text = "".join(number_list) )
-        split.operator( "object.clear_last_number", text="", icon_value=custom_icons["logo_calculator"].icon_id)
+        split.operator( "object.clear_last_number", text="", icon_value=custom_icons["Icon_Backspace"].icon_id)
 
         row = layout.row(align=True)
         split = row.split(factor=1/4)
