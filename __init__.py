@@ -74,19 +74,19 @@ class EqualOperator(bpy.types.Operator):
                 #    number_list = number_list[:-2]
                 #    return {'FINISHED'}
                 if indice == "+" and continuar:
-                    last_result = int(last_result) + int(number_list[ref_indice])
+                    last_result = float(last_result) + float(number_list[int(ref_indice)])
                     print("suma :" + str(last_result))
                         
                 elif indice == "-"and continuar:
-                    last_result = int(last_result) - int(number_list[int(ref_indice)])
+                    last_result = float(last_result) - float(number_list[int(ref_indice)])
                     print("Resta :" + str(last_result))
                     
                 elif indice == "*"and continuar:
-                    last_result = int(last_result) * int(number_list[int(ref_indice)])
+                    last_result = float(last_result) * float(number_list[int(ref_indice)])
                     print("multiplicacion")
                     
                 elif indice == "/"and continuar:
-                    last_result = int(last_result) / int(number_list[int(ref_indice)])
+                    last_result = float(last_result) / float(number_list[int(ref_indice)])
                     print("division")
                     
             print("numero activo :" + str(last_result))
