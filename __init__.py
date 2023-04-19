@@ -1,5 +1,7 @@
 import bpy
 from bpy.props import StringProperty
+import bpy.utils.previews
+import os
 
 bl_info = {
     "name": "Calculadora",
@@ -13,6 +15,23 @@ number_list = [""]
 number_active = 0
 last_result = 0
 last_operation = ""
+
+# Variable global para almacenar tus iconos
+custom_icons = None
+
+def load_custom_icons():
+    global custom_icons
+    custom_icons = bpy.utils.previews.new()
+
+    # Carga los iconos desde el directorio de recursos de tu add-on
+    icons_dir = bpy.path.abspath("//resources")
+
+    # Registra los iconos
+    custom_icons.load("logo_calculator", os.path.join(icons_dir, "Logo_Calculator.png"), 'IMAGE')
+
+def unload_custom_icons():
+    global custom_icons
+    bpy.utils.previews.remove(custom_icons)
 
 # Escribir numero
 class WriteOneOperator(bpy.types.Operator):
@@ -151,7 +170,7 @@ class CalculatorPanel(bpy.types.Panel):
         row = box.row()
         split = row.split(factor=5/6)
         split.label(text = "".join(number_list) )
-        split.operator( "object.clear_last_number", text="", icon='TRIA_LEFT')
+        split.operator( "object.clear_last_number", text="", icon_value=custom_icons["logo_calculator"].icon_id)
 
         row = layout.row(align=True)
         split = row.split(factor=1/4)
@@ -191,6 +210,7 @@ def register():
     bpy.utils.register_class(EqualOperator)
     bpy.utils.register_class(ClearOperator)
     bpy.utils.register_class(ClearLasNumberOperator)
+    load_custom_icons()
 
 def unregister():
     bpy.utils.unregister_class(CalculatorPanel)
@@ -199,6 +219,7 @@ def unregister():
     bpy.utils.unregister_class(EqualOperator)
     bpy.utils.unregister_class(ClearOperator)
     bpy.utils.unregister_class(ClearLasNumberOperator)
+    unload_custom_icons()
 
 if __name__ == "__main__":
     register()
