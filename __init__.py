@@ -176,7 +176,8 @@ class CalculatorPanel(bpy.types.Panel):
 
         row = layout.row(align=True)
         split = row.split(factor=1/4)
-        split.operator( "object.clear", text="", icon='TRASH')
+        #split.operator( "object.clear", text="", icon='TRASH')
+        split.operator( "object.write_number", text=".").string_property = "."
         split.operator( "object.write_number", text="0").string_property = "0"
         split.operator( "object.equal_operator", text="=")
         split.operator("object.new_operator", text="/").string_property = "/"
