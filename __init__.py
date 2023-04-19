@@ -24,7 +24,7 @@ def load_custom_icons():
     custom_icons = bpy.utils.previews.new()
 
     # Carga los iconos desde el directorio de recursos de tu add-on
-    icons_dir = bpy.path.abspath("//resources")
+    icons_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "resources")
 
     # Registra los iconos
     custom_icons.load("logo_calculator", os.path.join(icons_dir, "Logo_Calculator.png"), 'IMAGE')
